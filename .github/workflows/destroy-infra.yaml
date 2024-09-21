@@ -18,6 +18,10 @@ jobs:
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
+      - name: Terraform init
+        id: init
+        run: terraform init
+
       - name: Destroy Infra
         id: destroy
         run: terraform destroy -auto-approve
