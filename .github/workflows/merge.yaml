@@ -1,0 +1,42 @@
+name: Merge to Main branch
+on:
+  push:
+    branches:
+      - main
+
+env:
+  TF_LOG: INFO
+  TF_INPUT: false
+
+jobs:
+  merge-main-apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init
+        id: init
+        run: terraform init
+
+      - name: Terraform format
+        id: fmt
+        run: terraform fmt
+
+      - name: Terraform validate
+        id: validate
+        if: success() || failure()
+        run: terraform validate
+
+      - name: Terraform Plan
+        id: plan
+        if: success()
+        run: terraform plan
+
+      - name: Terraform apply
+        id: apply
+        if: success()
+        run: terraform apply -auto-approve
