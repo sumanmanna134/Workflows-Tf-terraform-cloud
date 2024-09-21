@@ -1,0 +1,40 @@
+name: Push to Feature Branch
+on:
+  push:
+    branches:
+      - '*'
+      - '!main'
+env:
+  TF_LOG: INFO
+  TF_INPUT: false
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  pull-validate-terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+
+      - name: terraform validate
+        id: validate
+        if: success() || failure()
+        run: terraform validate -no-color
