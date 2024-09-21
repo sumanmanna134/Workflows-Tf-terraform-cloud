@@ -1,8 +1,6 @@
 name: Merge to Main branch
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 env:
   TF_LOG: INFO
