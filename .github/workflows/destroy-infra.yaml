@@ -1,0 +1,25 @@
+name: Destroy Infra CI
+on:
+  workflow_dispatch:
+
+env:
+  TF_INPUT: false
+  TF_LOG: INFO
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform
+
+      - name: Destroy Infra
+        id: destroy
+        run: terraform destroy -auto-approve
+
+      - name: Success
+        id: Success
+        run: echo "Destroyed Infrastructure successfully!! ohoo.."
