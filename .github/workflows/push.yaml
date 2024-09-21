@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 jobs:
-  pr-infra-check:
+  pull-validate-terraform:
     runs-on: ubuntu-latest
 
     steps:
