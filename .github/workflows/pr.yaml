@@ -35,7 +35,6 @@ jobs:
 
       - name: plan
         id: plan
-        if: steps.plan.outcome == 'success'
         run: terraform plan
 
       - name: Add Plan Comment
